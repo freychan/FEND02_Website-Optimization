@@ -418,39 +418,32 @@ var resizePizzas = function(size) {
 
   changeSliderLabel(size);
 
-   // 返回不同的尺寸以将披萨元素由一个尺寸改成另一个尺寸。由changePizzaSlices(size)函数调用
-  function determineDx (elem, size) {
-    var oldWidth = elem.offsetWidth;
-    var windowWidth = document.querySelector("#randomPizzas").offsetWidth;
-    var oldSize = oldWidth / windowWidth;
-
-    // 将值转成百分比宽度
-    function sizeSwitcher (size) {
-      switch(size) {
-        case "1":
-          return 0.25;
-        case "2":
-          return 0.3333;
-        case "3":
-          return 0.5;
-        default:
-          console.log("bug in sizeSwitcher");
-      }
-    }
-
-    var newSize = sizeSwitcher(size);
-    var dx = (newSize - oldSize) * windowWidth;
-
-    return dx;
-  }
+   // 直接返回百分比宽度
+   function determineDx(size) {
+   	// 将值转成百分比宽度
+   	switch (size) {
+   	case "1":
+   		return "25%";
+   	case "2":
+   		return "33.33%";
+   	case "3":
+   		return "50%";
+   	default:
+   		console.log("bug in sizeSwitcher");
+   	}
+   }
 
   // 遍历披萨的元素并改变它们的宽度
   function changePizzaSizes(size) {
-    for (var i = 0; i < document.querySelectorAll(".randomPizzaContainer").length; i++) {
-      var dx = determineDx(document.querySelectorAll(".randomPizzaContainer")[i], size);
-      var newwidth = (document.querySelectorAll(".randomPizzaContainer")[i].offsetWidth + dx) + 'px';
-      document.querySelectorAll(".randomPizzaContainer")[i].style.width = newwidth;
-    }
+  	// 用变量保存randomPizzaContainer的选择结果
+  	var randomPizzaContainer = document.querySelectorAll(".randomPizzaContainer");
+  	// 预计算newwidth
+  	var newwidth = determineDx(size);
+  	window.requestAnimationFrame(function () {
+  		for (var i = 0; i < randomPizzaContainer.length; i++) {
+  			randomPizzaContainer[i].style.width = newwidth;
+  		}
+  	});
   }
 
   changePizzaSizes(size);
@@ -495,23 +488,28 @@ function logAverageFrame(times) {   // times参数是updatePositions()由User Ti
 
 // 基于滚动条位置移动背景中的披萨滑窗
 function updatePositions() {
-  frame++;
-  window.performance.mark("mark_start_frame");
+	frame++;
+	window.performance.mark("mark_start_frame");
 
-  var items = document.querySelectorAll('.mover');
-  for (var i = 0; i < items.length; i++) {
-    var phase = Math.sin((document.body.scrollTop / 1250) + (i % 5));
-    items[i].style.left = items[i].basicLeft + 100 * phase + 'px';
-  }
+	var items = document.querySelectorAll('.mover');
+	// 避免在改变文档时同时读入与写入
+	var bodyScrollTop = document.body.scrollTop;
+	// 使用requestAnimationFrame进行同步
+	window.requestAnimationFrame(function () {
+		for (var i = 0; i < items.length; i++) {
+			var phase = Math.sin(bodyScrollTop / 1250 + (i % 5));
+			items[i].style.left = items[i].basicLeft + 100 * phase + 'px';
+		}
+	});
 
-  // 再次使用User Timing API。这很值得学习
-  // 能够很容易地自定义测量维度
-  window.performance.mark("mark_end_frame");
-  window.performance.measure("measure_frame_duration", "mark_start_frame", "mark_end_frame");
-  if (frame % 10 === 0) {
-    var timesToUpdatePosition = window.performance.getEntriesByName("measure_frame_duration");
-    logAverageFrame(timesToUpdatePosition);
-  }
+	// 再次使用User Timing API。这很值得学习
+	// 能够很容易地自定义测量维度
+	window.performance.mark("mark_end_frame");
+	window.performance.measure("measure_frame_duration", "mark_start_frame", "mark_end_frame");
+	if (frame % 10 === 0) {
+		var timesToUpdatePosition = window.performance.getEntriesByName("measure_frame_duration");
+		logAverageFrame(timesToUpdatePosition);
+	}
 }
 
 // 在页面滚动时运行updatePositions函数
