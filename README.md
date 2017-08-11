@@ -5,7 +5,7 @@
 
 ### 步骤
 
-####Part 1: 优化 index.html 的 PageSpeed Insights 得分
+#### Part 1: 优化 index.html 的 PageSpeed Insights 得分
 
 1. 强制使用 `https` 协议请求字体数据。
 2. 针对 print.css，通过媒体查询取消阻止，优化 CRP。
@@ -15,7 +15,7 @@
 
 ----
 
-####Part 2: 优化 pizza.html 的 FPS（每秒帧数）
+#### Part 2: 优化 pizza.html 的 FPS（每秒帧数）
 
 编辑 views/js/main.js 来优化 views/pizza.html，直到这个网页的 FPS 达到或超过 60fps。
 1. 停止 FSL，删除代码中不必要的布局反复。
