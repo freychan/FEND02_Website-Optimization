@@ -22,7 +22,7 @@
 编辑 views/js/main.js 来优化 views/pizza.html，直到这个网页的 FPS 达到或超过 60fps。
 1. 停止 FSL，删除代码中不必要的布局反复。
 2. 使用 `requestAnimationFrame` 刷新页面。
-3. 替换选择器：将 `document.querySelector()` 替换为 `document.getElementById()` 或 `document.getElementsByClassName` 加快代码运行速度。
+3. 替换选择器：将 `document.querySelector()` 替换为 `document.getElementById()` 或 `document.getElementsByClassName()` 加快代码运行速度。
 4. 通过条件语句判断减少背景加载的 pizza 数量。
 
 ----
