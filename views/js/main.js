@@ -403,13 +403,13 @@ var resizePizzas = function(size) {
   function changeSliderLabel(size) {
     switch(size) {
       case "1":
-        document.querySelector("#pizzaSize").innerHTML = "Small";
+        document.getElementById("pizzaSize").innerHTML = "Small";
         return;
       case "2":
-        document.querySelector("#pizzaSize").innerHTML = "Medium";
+        document.getElementById("pizzaSize").innerHTML = "Medium";
         return;
       case "3":
-        document.querySelector("#pizzaSize").innerHTML = "Large";
+        document.getElementById("pizzaSize").innerHTML = "Large";
         return;
       default:
         console.log("bug in changeSliderLabel");
@@ -436,7 +436,7 @@ var resizePizzas = function(size) {
   // 遍历披萨的元素并改变它们的宽度
   function changePizzaSizes(size) {
   	// 用变量保存randomPizzaContainer的选择结果
-  	var randomPizzaContainer = document.querySelectorAll(".randomPizzaContainer");
+  	var randomPizzaContainer = document.getElementsByClassName("randomPizzaContainer");
   	// 预计算newwidth
   	var newwidth = determineDx(size);
   	window.requestAnimationFrame(function () {
@@ -491,7 +491,7 @@ function updatePositions() {
 	frame++;
 	window.performance.mark("mark_start_frame");
 
-	var items = document.querySelectorAll('.mover');
+	var items = document.getElementsByClassName('mover');
 	// 避免在改变文档时同时读入与写入
 	var bodyScrollTop = document.body.scrollTop;
 	// 使用requestAnimationFrame进行同步
@@ -527,7 +527,10 @@ document.addEventListener('DOMContentLoaded', function() {
     elem.style.width = "73.333px";
     elem.basicLeft = (i % cols) * s;
     elem.style.top = (Math.floor(i / cols) * s) + 'px';
-    document.querySelector("#movingPizzas1").appendChild(elem);
+    document.getElementById("movingPizzas1").appendChild(elem);
+    if (elem.style.top > document.documentElement.clientHeight){
+      break
+    }
   }
   updatePositions();
 });
